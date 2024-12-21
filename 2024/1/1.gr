@@ -1,0 +1,55 @@
+DELIMITER = "   "
+
+// read STDIN line by line, do `cat 1.txt | grol 1.gr`
+func readInput(lrmap) {
+    line := read()
+    if len(line) < 2 {
+       lrmap
+    } else {
+     nums := split(line[0:-1], DELIMITER)
+     readInput({
+         "left": lrmap.left + int(nums[0]),
+     	 "right": lrmap.right + int(nums[1])
+    })
+   }
+}
+
+func insertSort(arr) {
+     if len(arr) < 1 {
+     	return []
+     }
+     insert := func(a,b) {
+        if len(b) == 0 {
+     	   return a
+	}
+	if a[0] < b[0] {
+	   a + b
+	} else {
+	  [b[0]] + insert(a, b[1:])
+	}
+     }
+     
+     insert([arr[0]], insertSort(arr[1:]))
+}
+
+func diff(a,b) {
+     if a > b {
+     	a - b
+     } else {
+       b - a
+     }
+}
+
+func solve() {
+     inputLines := readInput({"left": [], "right": []})
+     lSorted  := insertSort(inputLines["left"])
+     rSorted  := insertSort(inputLines["right"])
+     l := len(inputLines["left"])
+     distance := 0
+     for i := l {
+     	 distance = distance + diff(lSorted[i], rSorted[i])
+     }
+     println(distance)
+}
+
+solve()
